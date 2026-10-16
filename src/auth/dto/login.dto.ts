@@ -1,4 +1,9 @@
+import { IsNotEmpty } from "class-validator";
+
 export class LoginDto {
+    @IsNotEmpty({message:'Email harus diisi'})
     readonly email: string;
+
+    @IsNotEmpty({message:'Password harus diisi'})
     readonly password: string;
 }
