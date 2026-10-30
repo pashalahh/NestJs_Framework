@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Book } from './entities/book-entity.js';
 import { CreateBookDto } from './dto/create-book.dto.js';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -26,31 +26,42 @@ export class BooksService {
 
         return await this.bookRepository.save(newBook);
     }
-    
-//     // update data buku
-//     updateData(id: number, updateBookDto: CreateBookDto): Book {
-//         const bookIndex = this.books.findIndex(book => book.id === id);
-//         if (bookIndex === -1) {
-//             throw new Error(`Buku dengan id ${id} tidak ditemukan`);
-//         }
-//         const updatedBook: Book = {
-//             ...this.books[bookIndex],
-//             title: updateBookDto.title,
-//             author: updateBookDto.author,
-//             isbn: updateBookDto.isbn,
-//             publishedYear: updateBookDto.publishedYear
-//         };
-//         this.books[bookIndex] = updatedBook;
-//         return updatedBook;
-//     }
 
-//     // hapus data buku
-//     hapusData(id: number): string {
-//         const bookIndex = this.books.findIndex(book => book.id === id);
-//         if (bookIndex === -1) {
-//             throw new Error(`Buku dengan id ${id} tidak ditemukan`);
-//         }
-//         this.books.splice(bookIndex, 1);
-//         return `Buku dengan id ${id} berhasil dihapus`;
-//     }
+    // Menampilkan data berdasarkan id
+    async findOne (id: string): Promise<Book>{
+        //  Cari buku berdasarkan id
+        const book = await this.bookRepository.findOneBy({id})
+
+        //  Jika tidak ada
+        if(!book){
+            throw new NotFoundException(`Buku ${id} tidak ditemukan`)
+        }
+
+        //  Jika data buku ditemukan
+        return book
+    }
+    
+    // update data buku
+    async updateData(id: string, createBookDto: CreateBookDto): Promise<Book> {
+        //  Cek dulu data bukunya ada atau tidak
+        const book = await this.findOne(id)
+        
+        //  Gabungkan perubahannya
+        const updatedBook = await this.bookRepository.merge(book, createBookDto)
+
+        //  Simpan / update data
+        return await this.bookRepository.save(updatedBook)
+    }
+
+    // hapus data buku
+    async hapusData(id: string): Promise<{message : string, deletedId : string}> {
+        await this.findOne(id)
+
+        await this.bookRepository.softDelete(id)
+
+        return {
+            message : `Data ${id} berhasil dihapus`,
+            deletedId : id
+        }
+    }
 }
