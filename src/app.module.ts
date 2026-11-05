@@ -9,6 +9,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { inject } from 'vitest';
+import { CategoriesModule } from './categories/categories.module.js';
+import { CustomersModule } from './customers/customers.module.js';
+import { CustomerAddressesModule } from './customer_addresses/customer_addresses.module.js';
+import { PublishersModule } from './publishers/publishers.module.js';
+import { AuthorsModule } from './authors/authors.module.js';
+import { OrdersModule } from './orders/orders.module.js';
+import { BookAuthorsModule } from './book_authors/book_authors.module.js';
+import { OrderItemsModule } from './order_items/order_items.module.js';
+import { PaymentsModule } from './payments/payments.module.js';
+import { ShipmentsModule } from './shipments/shipments.module.js';
 
 @Module({
   imports: [
@@ -42,7 +52,27 @@ import { inject } from 'vitest';
 
         synchronize: configService.get<string>('NODE_ENV') === 'development'
       })
-    })
+    }),
+
+    CategoriesModule,
+
+    CustomersModule,
+
+    CustomerAddressesModule,
+
+    PublishersModule,
+
+    AuthorsModule,
+
+    OrdersModule,
+
+    BookAuthorsModule,
+
+    OrderItemsModule,
+
+    PaymentsModule,
+
+    ShipmentsModule
   ],
   controllers: [AppController],
   providers: [AppService],
