@@ -1,4 +1,4 @@
-import { Check, Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import { Check, Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, type Relation } from "typeorm";
 import { Order } from "../../orders/entities/order.entity.js";
 
 @Entity({ name: 'payments' })
@@ -13,7 +13,7 @@ export class Payment {
     onDelete: 'CASCADE',
     })
     @JoinColumn({ name: 'order_id' })
-    order: Order;
+    order: Relation<Order>; // Perbaikan: Gunakan Relation<Order>
 
     @Column({ name: 'order_id', type: 'uuid' })
     orderId: string;
@@ -29,7 +29,7 @@ export class Payment {
     amount: number;
 
     @Column({ type: 'varchar', length: 30 })
-    staus: string;
+    status: string; // Perbaikan typo: sebelumnya "staus"
 
     @Column({ name: 'paid_at', type: 'timestamp', nullable: true })
     paidAt: Date | null;

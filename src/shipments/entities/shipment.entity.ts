@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, type Relation, UpdateDateColumn } from "typeorm";
 import { Order } from "../../orders/entities/order.entity.js";
 
 @Entity({ name: 'shipments' })
@@ -12,7 +12,7 @@ export class Shipment {
     onDelete: 'CASCADE',
     })
     @JoinColumn({ name: 'order_id' })
-    order: Order;
+    order: Relation<Order>; // Perbaikan: Gunakan Relation<Order>
 
     @Column({ name: 'order_id', type: 'uuid' })
     orderId: string;

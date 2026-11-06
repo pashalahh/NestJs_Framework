@@ -1,4 +1,4 @@
-import { Check, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Check, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, type Relation, Unique } from "typeorm";
 import { Order } from "../../orders/entities/order.entity.js";
 import { Book } from "../../books/entities/book-entity.js";
 
@@ -16,7 +16,7 @@ export class OrderItem {
     onDelete: 'CASCADE',
     })
     @JoinColumn({ name: 'order_id' })
-    order: Order;
+    order: Relation<Order>; // Perbaikan: Gunakan Relation<Order>
 
     @Column({ name: 'order_id', type: 'uuid' })
     orderId: string;
@@ -27,7 +27,7 @@ export class OrderItem {
     onDelete: 'RESTRICT',
     })
     @JoinColumn({ name: 'book_id' })
-    book: Book;
+    book: Relation<Book>; // Perbaikan: Gunakan Relation<Book>
 
     @Column({ name: 'book_id', type: 'uuid' })
     bookId: string;

@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, type Relation, UpdateDateColumn } from "typeorm";
 import { Customer } from '../../customers/entities/customer.entity.js';
 
 @Entity({ name: 'customer_addresses' })
@@ -12,7 +12,7 @@ export class CustomerAddress {
     onDelete: 'CASCADE',
     })
     @JoinColumn({ name: 'customer_id' })
-    customer: Customer;
+    customer: Relation<Customer>; // Tambahkan Relation di sini
 
     @Column({ name: 'customer_id', type: 'uuid' })
     customer_id: string;

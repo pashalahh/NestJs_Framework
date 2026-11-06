@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, type Relation, UpdateDateColumn } from "typeorm";
 import { Book } from "../../books/entities/book-entity.js";
 
 @Entity('categories')
@@ -11,11 +11,14 @@ export class Category {
 
         // 1 kategori punya banyak buku 1:M
         @OneToMany(() => Book, (item) => item.category, {cascade:true})
-        books: Book[];
+        books: Relation<Book>[]; // Tambahkan Relation di sini
     
         @CreateDateColumn({name:'created_at'})
         createdAt: Date;
     
         @UpdateDateColumn({name:'updated_at'})
         updatedAt: Date;
+
+        @DeleteDateColumn({name:'deleted_at', nullable:true})
+        deletedAt: Date;
 }

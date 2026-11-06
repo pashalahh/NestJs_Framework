@@ -1,14 +1,13 @@
-import { Check, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from "typeorm";
+import { Check, Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, type Relation, UpdateDateColumn } from "typeorm";
 import { Category } from "../../categories/entities/category.entity.js";
 import { Publisher } from "../../publishers/entities/publisher.entity.js";
 import { BookAuthor } from "../../book_authors/entities/book_author.entity.js";
 import { OrderItem } from "../../order_items/entities/order_item.entity.js";
 
-
 @Entity({name:'books'})
 @Check('CHK_books_price_non_negative', '"price" >= 0')
 @Check('CHK_books_stock_non_negative', '"stock" >= 0')
-export class Book{
+export class Book {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -31,8 +30,8 @@ export class Book{
     stock: number;
 
     @ManyToOne(() => Category, (category) => category.books, {
-    nullable: true,
-    onDelete: 'RESTRICT',
+        nullable: true,
+        onDelete: 'RESTRICT',
     })
     @JoinColumn({ name: 'category_id' })
     category: Relation<Category> | null;
@@ -42,8 +41,8 @@ export class Book{
 
     // publishers (1) -> (N) books
     @ManyToOne(() => Publisher, (publisher) => publisher.books, {
-    nullable: true,
-    onDelete: 'CASCADE',
+        nullable: true,
+        onDelete: 'CASCADE',
     })
     @JoinColumn({ name: 'publisher_id' })
     publisher: Relation<Publisher> | null;
@@ -53,13 +52,13 @@ export class Book{
 
     // books (1) -> (N) book_authors  (=> books N <-> N authors)
     @OneToMany(() => BookAuthor, (bookAuthor) => bookAuthor.book, {
-    cascade: ['insert'],
+        cascade: ['insert'],
     })
-    bookAuthors: BookAuthor[];
+    bookAuthors: Relation<BookAuthor>[]; 
 
     // books (1) -> (N) order_items
     @OneToMany(() => OrderItem, (item) => item.book)
-    orderItems: OrderItem[];
+    orderItems: Relation<OrderItem>[]; 
 
     @CreateDateColumn({name:'created_at'})
     createdAt: Date;

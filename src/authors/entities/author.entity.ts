@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, type Relation, UpdateDateColumn } from "typeorm";
 import { BookAuthor } from "../../book_authors/entities/book_author.entity.js";
 
 @Entity({ name: 'authors' })
@@ -10,7 +10,7 @@ export class Author {
     name: string;
     
     @OneToMany(() => BookAuthor, (bookAuthor) => bookAuthor.author)
-    bookAuthors: BookAuthor[];
+    bookAuthors: Relation<BookAuthor>[]; // Tambahkan Relation di sini
     
     @CreateDateColumn({name:'created_at'})
     createdAt: Date;

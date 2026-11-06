@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Query, Put } from '@nestjs/common';
 import { CategoriesService } from './categories.service.js';
 import { CreateCategoryDto } from './dto/create-category.dto.js';
 import { UpdateCategoryDto } from './dto/update-category.dto.js';
@@ -7,28 +7,35 @@ import { UpdateCategoryDto } from './dto/update-category.dto.js';
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
-  @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoriesService.create(createCategoryDto);
-  }
-
+  // menampilkan data 
   @Get()
   findAll() {
     return this.categoriesService.findAll();
   }
 
+  // Menampilkan data berdasarkan id
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoriesService.findOne(+id);
+  findone(@Param('id') id:string){
+    return this.categoriesService.findById(id)
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
-    return this.categoriesService.update(+id, updateCategoryDto);
+  // menyimpan data
+  @Post()
+  create(@Body() createCategoryDto: CreateCategoryDto) {
+    return this.categoriesService.createCategory(createCategoryDto);
   }
 
+  // mengudate data
+  @Put(':id')
+  updateData(
+    @Param('id') id: string, 
+    @Body() createBookDto: CreateCategoryDto) {
+    return this.categoriesService.updatedCategory(id, createBookDto);
+  }
+
+  // menghapus data
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoriesService.remove(+id);
+  hapusData(@Param('id') id: string) {
+    return this.categoriesService.deletedCategory(id);
   }
 }
